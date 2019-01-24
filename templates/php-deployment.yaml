@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: php
+  labels:
+    tier: frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: php
+      tier: frontend
+  template:
+    metadata:
+      labels:
+        app: php
+        tier: frontend
+    spec:
+      containers:
+      - name: php
+        image: hevelop/ak-php
+        env:
+        - name: COMPOSER_HOME
+          value: /home/docker/.composer
+        workingDir: /srv/pim
+        ports:
+        - containerPort: 9001
