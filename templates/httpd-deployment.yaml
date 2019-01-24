@@ -18,6 +18,6 @@ spec:
     spec:
       containers:
       - name: httpd
-        image: hevelop/ak-httpd
+        image: hevelop/ak-httpd:1.3
         ports:
         - containerPort: 80
