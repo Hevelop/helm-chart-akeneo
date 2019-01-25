@@ -9,5 +9,6 @@ spec:
     app: httpd
     tier: frontend
   ports:
-  - protocol: TCP
+  - name: http
+    protocol: TCP
     port: 80
