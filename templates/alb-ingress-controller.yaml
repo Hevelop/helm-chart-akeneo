@@ -68,16 +68,16 @@ spec:
             # This is only here for examples. It's recommended you instead use
             # a project like kube2iam for granting access.
             {{- if .Values.ingress.awsAccessKeyId }}
-            - name: {{ .Values.ingress.awsAccessKeyId }}
-              value: KEYVALUE
+            - name: AWS_ACCESS_KEY_ID
+              value: {{ .Values.ingress.awsAccessKeyId }}
             {{- end }}
             
             # AWS key secret for authenticating with the AWS API.
             # This is only here for examples. It's recommended you instead use
             # a project like kube2iam for granting access.
             {{- if .Values.ingress.awsSecretAccessKey }}
-            - name: {{ .Values.ingress.awsSecretAccessKey }}
-              value: SECRETVALUE
+            - name: AWS_SECRET_ACCESS_KEY
+              value: {{ .Values.ingress.awsSecretAccessKey }}
             {{- end }}
           # Repository location of the ALB Ingress Controller.
           image: docker.io/amazon/aws-alb-ingress-controller:v1.1.0
