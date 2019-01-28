@@ -4,6 +4,10 @@ metadata:
   name: httpd
   labels:
     tier: frontend
+  {{- if .Values.ingress.enabled }}
+  annotations:
+    kubernetes.io/ingress.class: {{ .Values.ingress.class }}
+  {{- end }}
 spec:
   selector:
     app: httpd

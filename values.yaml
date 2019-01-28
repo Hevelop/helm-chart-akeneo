@@ -1,2 +1,8 @@
 ingress:
+  awsAccessKeyId: ""
+  awsSecretAccessKey: ""
+  awsVpcRegion: ""
+  awsVpcId: ""
   namespace: kube-system
+  class: alb
+  clusterName: default
