@@ -8,3 +8,4 @@ ingress:
   class: alb
   clusterName: default
   host: ""
+  tags: "app=akeneo"
