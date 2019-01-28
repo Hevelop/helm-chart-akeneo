@@ -7,3 +7,4 @@ ingress:
   namespace: kube-system
   class: alb
   clusterName: default
+  host: ""

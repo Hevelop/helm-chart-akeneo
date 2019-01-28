@@ -1,0 +1,19 @@
+{{- if .Values.ingress.enabled }}
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: httpd
+  namespace: {{ .Values.ingress.namespace }}
+  annotations:
+    kubernetes.io/ingress.class: {{ .Values.ingress.class }}
+    alb.ingress.kubernetes.io/scheme: internet-facing
+spec:
+  rules:
+    - host: {{ .Values.ingress.host }}
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: httpd
+              servicePort: http
+{{- end }}
