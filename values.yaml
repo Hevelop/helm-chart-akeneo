@@ -1,4 +1,5 @@
 ingress:
+  enabled: false
   awsAccessKeyId: ""
   awsSecretAccessKey: ""
   awsVpcRegion: ""
