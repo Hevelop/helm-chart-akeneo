@@ -8,9 +8,10 @@ metadata:
     kubernetes.io/ingress.class: {{ .Values.ingress.class }}
     alb.ingress.kubernetes.io/scheme: internet-facing
     alb.ingress.kubernetes.io/tags: {{ .Values.ingress.tags }}
-    {{- if .Values.ingress.listenPorts }}
-    alb.ingress.kubernetes.io/listen-ports: {{ .Values.ingress.listenPorts }}
-    {{- end }}
+    # {{- if .Values.ingress.listenPorts }}
+    # alb.ingress.kubernetes.io/listen-ports: {{ .Values.ingress.listenPorts }}
+    # {{- end }}
+    alb.ingress.kubernetes.io/listen-ports: `[{"HTTP": 80}]`
     alb.ingress.kubernetes.io/ip-address-type: {{ .Values.ingress.addressType }}
 spec:
   rules:
