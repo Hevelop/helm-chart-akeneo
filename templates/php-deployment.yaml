@@ -16,6 +16,10 @@ spec:
         app: php
         tier: frontend
     spec:
+      volumes:
+        - name: akeneo-parameters
+          configMap:
+            name: akeneo-parameters-yml
       containers:
       - name: php
         image: hevelop/ak-php:1.2
@@ -25,4 +29,8 @@ spec:
         workingDir: /srv/pim
         ports:
         - containerPort: 9001
+        volumeMounts:
+          - name: akeneo-parameters
+            mountPath: /srv/pim/app/config/parameters.yml
+            subPath: parameters.yml
       restartPolicy: Always
