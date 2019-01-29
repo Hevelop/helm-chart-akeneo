@@ -1,5 +1,6 @@
 ingress:
   enabled: false
+  awsApiDebug: false
   awsAccessKeyId: ""
   awsSecretAccessKey: ""
   awsVpcRegion: ""

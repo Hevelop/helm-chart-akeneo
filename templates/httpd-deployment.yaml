@@ -21,3 +21,4 @@ spec:
         image: hevelop/ak-httpd:1.3
         ports:
         - containerPort: 80
+      restartPolicy: Always

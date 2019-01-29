@@ -25,3 +25,4 @@ spec:
         workingDir: /srv/pim
         ports:
         - containerPort: 9001
+      restartPolicy: Always

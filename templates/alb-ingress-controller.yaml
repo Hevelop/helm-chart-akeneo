@@ -59,7 +59,9 @@ spec:
 
             # Enables logging on all outbound requests sent to the AWS API.
             # If logging is desired, set to true.
-            # - ---aws-api-debug
+            {{- if .Values.ingress.awsApiDebug }}
+            - ---aws-api-debug
+            {{- end }}
             # Maximum number of times to retry the aws calls.
             # defaults to 10.
             # - --aws-max-retries=10
@@ -80,7 +82,7 @@ spec:
               value: {{ .Values.ingress.awsSecretAccessKey }}
             {{- end }}
           # Repository location of the ALB Ingress Controller.
-          image: docker.io/amazon/aws-alb-ingress-controller:v1.1.0
+          image: docker.io/amazon/aws-alb-ingress-controller:v1.1.1
           imagePullPolicy: Always
           name: server
           resources: {}
