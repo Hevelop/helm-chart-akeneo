@@ -10,8 +10,5 @@ ingress:
   clusterName: default
   host: ""
   tags: "app=akeneo"
-  listenPorts:
-    HTTP: 80
-    HTTPS: 443
   addressType: ipv4
   
