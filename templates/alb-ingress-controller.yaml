@@ -65,22 +65,9 @@ spec:
             # Maximum number of times to retry the aws calls.
             # defaults to 10.
             # - --aws-max-retries=10
-          env:
-            # AWS key id for authenticating with the AWS API.
-            # This is only here for examples. It's recommended you instead use
-            # a project like kube2iam for granting access.
-            {{- if .Values.ingress.awsAccessKeyId }}
-            - name: AWS_ACCESS_KEY_ID
-              value: {{ .Values.ingress.awsAccessKeyId }}
-            {{- end }}
-            
-            # AWS key secret for authenticating with the AWS API.
-            # This is only here for examples. It's recommended you instead use
-            # a project like kube2iam for granting access.
-            {{- if .Values.ingress.awsSecretAccessKey }}
-            - name: AWS_SECRET_ACCESS_KEY
-              value: {{ .Values.ingress.awsSecretAccessKey }}
-            {{- end }}
+          envFrom:
+            - secretRef:
+                name: alb-ingress-secrets
           # Repository location of the ALB Ingress Controller.
           image: docker.io/amazon/aws-alb-ingress-controller:v1.1.1
           imagePullPolicy: Always
