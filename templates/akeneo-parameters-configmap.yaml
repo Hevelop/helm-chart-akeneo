@@ -5,8 +5,8 @@ metadata:
   labels:
     name: akeneo-parameters-yml
 data:
-  parameters.yml: |-
-    parameters:
+  parameters.yml:
+    parameters: |-
       {{- range $key, $value := .Values.configmap.akeneo.parameters }}
       {{ $key }}: {{ $value | quote }}
       {{- end }}
