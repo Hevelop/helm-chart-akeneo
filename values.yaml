@@ -1,3 +1,5 @@
+nameOverride: null
+
 ingress:
   enabled: false
   awsApiDebug: false
