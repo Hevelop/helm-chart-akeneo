@@ -1,13 +1,13 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: httpd
+  name: {{ template "akeneo.fullname" . }}-httpd
   labels:
-    tier: frontend
+    tier: {{ template "akeneo.fullname" . }}-frontend
 spec:
   selector:
-    app: httpd
-    tier: frontend
+    app: {{ template "akeneo.fullname" . }}-httpd
+    tier: {{ template "akeneo.fullname" . }}-frontend
   type: NodePort
   ports:
   - name: http

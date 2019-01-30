@@ -1,4 +1,4 @@
 apiVersion: v1
 description: Akeneo Helm chart for Kubernetes
 name: akeneo
-version: 0.4.6
+version: 0.5.0

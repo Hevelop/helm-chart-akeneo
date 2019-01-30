@@ -1,20 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: httpd
+  name: {{ template "akeneo.fullname" . }}-httpd
   labels:
-    tier: frontend
+    tier: {{ template "akeneo.fullname" . }}-frontend
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: httpd
-      tier: frontend
+      app: {{ template "akeneo.fullname" . }}-httpd
+      tier: {{ template "akeneo.fullname" . }}-frontend
   template:
     metadata:
       labels:
-        app: httpd
-        tier: frontend
+        app: {{ template "akeneo.fullname" . }}-httpd
+        tier: {{ template "akeneo.fullname" . }}-frontend
     spec:
       containers:
       - name: httpd

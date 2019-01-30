@@ -1,13 +1,13 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: php
+  name: {{ template "akeneo.fullname" . }}-php
   labels:
-    tier: frontend
+    tier: {{ template "akeneo.fullname" . }}-frontend
 spec:
   selector:
-    app: php
-    tier: frontend
+    app: {{ template "akeneo.fullname" . }}-php
+    tier: {{ template "akeneo.fullname" . }}-frontend
   ports:
   - protocol: TCP
     port: 9001

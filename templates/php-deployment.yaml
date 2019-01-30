@@ -1,28 +1,28 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: php
+  name: {{ template "akeneo.fullname" . }}-php
   labels:
-    tier: frontend
+    tier: {{ template "akeneo.fullname" . }}-frontend
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: php
-      tier: frontend
+      app: {{ template "akeneo.fullname" . }}-php
+      tier: {{ template "akeneo.fullname" . }}-frontend
   template:
     metadata:
       labels:
-        app: php
-        tier: frontend
+        app: {{ template "akeneo.fullname" . }}-php
+        tier: {{ template "akeneo.fullname" . }}-frontend
     spec:
       volumes:
         - name: akeneo-parameters
           configMap:
-            name: akeneo-parameters-yml
+            name: {{ template "akeneo.fullname" . }}-akeneo-parameters-yml
         - name: akeneo-config-prod
           configMap:
-            name: akeneo-config-prod-yml
+            name: {{ template "akeneo.fullname" . }}-akeneo-config-prod-yml
       containers:
       - name: php
         image: hevelop/ak-php:1.2

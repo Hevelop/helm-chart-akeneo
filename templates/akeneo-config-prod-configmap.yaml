@@ -2,9 +2,9 @@
 kind: ConfigMap
 apiVersion: v1
 metadata:
-  name: akeneo-config-prod-yml
+  name: {{ template "akeneo.fullname" . }}-akeneo-config-prod-yml
   labels:
-    name: akeneo-config-prod-yml
+    name: {{ template "akeneo.fullname" . }}-akeneo-config-prod-yml
 data:
   config_prod.yml: |
     imports:
