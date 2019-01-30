@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ template "akeneo.fullname" . }}-httpd
+  name: {{ template "akeneo.fullname" . }}-service-httpd
   labels:
     tier: {{ template "akeneo.fullname" . }}-frontend
 spec:
