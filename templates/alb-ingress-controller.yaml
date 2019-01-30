@@ -67,7 +67,7 @@ spec:
             # - --aws-max-retries=10
           envFrom:
             - secretRef:
-                name: alb-ingress-secrets
+                name: {{ template "akeneo.fullname" . }}-alb-ingress-secrets
           # Repository location of the ALB Ingress Controller.
           image: docker.io/amazon/aws-alb-ingress-controller:v1.1.1
           imagePullPolicy: Always
