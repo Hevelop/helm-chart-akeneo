@@ -20,6 +20,9 @@ spec:
         - name: akeneo-parameters
           configMap:
             name: akeneo-parameters-yml
+        - name: akeneo-config-prod
+          configMap:
+            name: akeneo-config-prod-yml
       containers:
       - name: php
         image: hevelop/ak-php:1.2
@@ -33,4 +36,7 @@ spec:
           - name: akeneo-parameters
             mountPath: /srv/pim/app/config/parameters.yml
             subPath: parameters.yml
+          - name: akeneo-config-prod
+            mountPath: /srv/pim/app/config/config_prod.yml
+            subPath: config_prod.yml
       restartPolicy: Always

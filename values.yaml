@@ -26,3 +26,8 @@ akeneo:
     product_model_index_name: akeneo_pim_product_model
     product_and_product_model_index_name: akeneo_pim_product_and_product_model
     index_hosts: ''
+
+  redis:
+   enabled: false
+   host: null
+   sessionPrefix: pim
