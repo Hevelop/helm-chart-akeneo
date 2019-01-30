@@ -6,7 +6,7 @@ metadata:
     name: akeneo-parameters-yml
 data:
   parameters.yml: |
-    parameters: |-
+    parameters:
      {{- range $key, $value := .Values.akeneo.parameters }}
      {{ $key }}: {{ $value | quote }}
      {{- end }}
