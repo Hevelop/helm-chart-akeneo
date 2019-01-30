@@ -7,6 +7,6 @@ metadata:
 data:
   parameters.yml: |
     parameters: |-
-      {{- range $key, $value := .Values.configmap.akeneo.parameters }}
-      {{ $key }}: {{ $value | quote }}
-      {{- end }}
+     {{- range $key, $value := .Values.akeneo.parameters }}
+     {{ $key }}: {{ $value | quote }}
+     {{- end }}
