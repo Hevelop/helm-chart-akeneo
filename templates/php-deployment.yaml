@@ -25,7 +25,7 @@ spec:
             name: {{ template "akeneo.fullname" . }}-akeneo-config-prod-yml
       containers:
       - name: php
-        image: hevelop/ak-php:1.2
+        image: {{printf "%s:%s" .Values.images.php.repo .Values.images.php.tag -}}
         env:
         - name: COMPOSER_HOME
           value: /home/docker/.composer

@@ -1,5 +1,13 @@
 nameOverride: null
 
+images:
+ php:
+  repo: hevelop/ak-php
+  tag: latest
+ httpd:
+  repo: hevelop/ak-httpd
+  tag: latest
+
 ingress:
   enabled: false
   awsApiDebug: false
