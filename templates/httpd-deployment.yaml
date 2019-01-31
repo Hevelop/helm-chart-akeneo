@@ -25,7 +25,7 @@ spec:
             name: {{ template "akeneo.fullname" . }}-httpd-conf
       containers:
       - name: httpd
-        image: {{ printf "%s:%s" .Values.images.httpd.repo .Values.images.httpd.tag | quote }}
+        image: "{{ .Values.images.httpd.repo -}} : {{- .Values.images.httpd.tag }}"
         ports:
         - containerPort: 80
         volumeMounts:
