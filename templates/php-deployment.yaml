@@ -16,13 +16,13 @@ spec:
         app: {{ template "akeneo.fullname" . }}-php
         tier: {{ template "akeneo.fullname" . }}-frontend
     spec:
-      volumes:
-        - name: akeneo-parameters
-          configMap:
-            name: {{ template "akeneo.fullname" . }}-akeneo-parameters-yml
-        - name: akeneo-config-prod
-          configMap:
-            name: {{ template "akeneo.fullname" . }}-akeneo-config-prod-yml
+      # volumes:
+      #   - name: akeneo-parameters
+      #     configMap:
+      #       name: {{ template "akeneo.fullname" . }}-akeneo-parameters-yml
+      #   - name: akeneo-config-prod
+      #     configMap:
+      #       name: {{ template "akeneo.fullname" . }}-akeneo-config-prod-yml
       containers:
       - name: php
         image: "{{ .Values.images.php.repo -}} : {{- .Values.images.php.tag }}"
@@ -32,11 +32,11 @@ spec:
         workingDir: /srv/pim
         ports:
         - containerPort: 9001
-        volumeMounts:
-          - name: akeneo-parameters
-            mountPath: /srv/pim/app/config/parameters.yml
-            subPath: parameters.yml
-          - name: akeneo-config-prod
-            mountPath: /srv/pim/app/config/config_prod.yml
-            subPath: config_prod.yml
+        # volumeMounts:
+        #   - name: akeneo-parameters
+        #     mountPath: /srv/pim/app/config/parameters.yml
+        #     subPath: parameters.yml
+        #   - name: akeneo-config-prod
+        #     mountPath: /srv/pim/app/config/config_prod.yml
+        #     subPath: config_prod.yml
       restartPolicy: Always

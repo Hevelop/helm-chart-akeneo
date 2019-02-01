@@ -16,23 +16,23 @@ spec:
         app: {{ template "akeneo.fullname" . }}-httpd
         tier: {{ template "akeneo.fullname" . }}-frontend
     spec:
-      volumes:
-        - name: vhost-conf
-          configMap:
-            name: {{ template "akeneo.fullname" . }}-vhost-conf
-        - name: httpd-conf
-          configMap:
-            name: {{ template "akeneo.fullname" . }}-httpd-conf
+      # volumes:
+      #   - name: vhost-conf
+      #     configMap:
+      #       name: {{ template "akeneo.fullname" . }}-vhost-conf
+      #   - name: httpd-conf
+      #     configMap:
+      #       name: {{ template "akeneo.fullname" . }}-httpd-conf
       containers:
       - name: httpd
         image: "{{ .Values.images.httpd.repo -}} : {{- .Values.images.httpd.tag }}"
         ports:
         - containerPort: 80
-        volumeMounts:
-          - name: vhost-conf
-            mountPath: /usr/local/apache2/conf/vhost.conf
-            subPath: vhost.conf
-          - name: httpd-conf
-            mountPath: /usr/local/apache2/conf/httpd.conf
-            subPath: httpd.conf
+        # volumeMounts:
+        #   - name: vhost-conf
+        #     mountPath: /usr/local/apache2/conf/vhost.conf
+        #     subPath: vhost.conf
+        #   - name: httpd-conf
+        #     mountPath: /usr/local/apache2/conf/httpd.conf
+        #     subPath: httpd.conf
       restartPolicy: Always
