@@ -1,5 +1,10 @@
 nameOverride: null
 
+imageCredentials:
+ registry: null
+ username: null
+ password: null
+
 images:
  php:
   repo: hevelop/ak-php
