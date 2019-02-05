@@ -1,32 +1,32 @@
-# kind: ConfigMap
-# apiVersion: v1
-# metadata:
-#   name: {{ template "akeneo.fullname" . }}-vhost-conf
-#   labels:
-#     name: {{ template "akeneo.fullname" . }}-vhost-conf
-# data:
-#   vhost.conf: |
-#     <VirtualHost *:80>
-#         DocumentRoot /srv/pim/web
-#         <Directory /srv/pim/web>
-#             AllowOverride None
-#             Require all granted
+ kind: ConfigMap
+ apiVersion: v1
+ metadata:
+   name: {{ template "akeneo.fullname" . }}-vhost-conf
+   labels:
+     name: {{ template "akeneo.fullname" . }}-vhost-conf
+ data:
+   vhost.conf: |
+     <VirtualHost *:80>
+         DocumentRoot /srv/pim/web
+         <Directory /srv/pim/web>
+             AllowOverride None
+             Require all granted
 
-#             Options -MultiViews
-#             RewriteEngine On
-#             RewriteCond %{REQUEST_FILENAME} !-f
-#             RewriteRule ^(.*)$ app.php [QSA,L]
-#         </Directory>
+             Options -MultiViews
+             RewriteEngine On
+             RewriteCond %{REQUEST_FILENAME} !-f
+             RewriteRule ^(.*)$ app.php [QSA,L]
+         </Directory>
 
-#         <Directory /srv/pim>
-#             Options FollowSymlinks
-#         </Directory>
+         <Directory /srv/pim>
+             Options FollowSymlinks
+         </Directory>
 
-#         <Directory /srv/pim/web/bundles>
-#             RewriteEngine Off
-#         </Directory>
+         <Directory /srv/pim/web/bundles>
+             RewriteEngine Off
+         </Directory>
 
-#         ErrorLog /var/log/akeneo_error.log
-#         LogLevel warn
-#         CustomLog /var/log/akeneo_access.log combined
-#     </VirtualHost>
+         ErrorLog /var/log/akeneo_error.log
+         LogLevel warn
+         CustomLog /var/log/akeneo_access.log combined
+     </VirtualHost>
