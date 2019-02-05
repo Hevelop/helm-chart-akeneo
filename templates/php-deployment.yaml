@@ -32,11 +32,11 @@ spec:
           workingDir: /srv/pim
           ports:
           - containerPort: 9001
-           volumeMounts:
-             - name: akeneo-parameters
-               mountPath: /srv/pim/app/config/parameters.yml
-               subPath: parameters.yml
-             - name: akeneo-config-prod
-               mountPath: /srv/pim/app/config/config_prod.yml
-               subPath: config_prod.yml
+          volumeMounts:
+            - name: akeneo-parameters
+              mountPath: /srv/pim/app/config/parameters.yml
+              subPath: parameters.yml
+            - name: akeneo-config-prod
+              mountPath: /srv/pim/app/config/config_prod.yml
+              subPath: config_prod.yml
         restartPolicy: Always
