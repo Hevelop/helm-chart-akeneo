@@ -16,6 +16,10 @@ spec:
         app: {{ template "akeneo.fullname" . }}-php
         tier: {{ template "akeneo.fullname" . }}-frontend
     spec:
+      {{- if .Values.imageCredentials.registry }}
+      imagePullSecrets:
+        - name: myregistrykey
+      {{- end }}
       volumes:
         - name: akeneo-parameters
           configMap:
