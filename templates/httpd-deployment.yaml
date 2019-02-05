@@ -16,10 +16,8 @@ spec:
         app: {{ template "akeneo.fullname" . }}-httpd
         tier: {{ template "akeneo.fullname" . }}-frontend
     spec:
-      {{- if .Values.imageCredentials.registry }}
       imagePullSecrets:
           - name: myregistrykey
-      {{- end }}
       volumes:
         - name: vhost-conf
           configMap:
