@@ -23,7 +23,7 @@ spec:
          - name: akeneo-config-prod
            configMap:
              name: {{ template "akeneo.fullname" . }}-akeneo-config-prod-yml
-      containers:
+    containers:
       - name: php
         image: "{{ .Values.images.php.repo -}} : {{- .Values.images.php.tag }}"
         env:
