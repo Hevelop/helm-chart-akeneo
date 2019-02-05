@@ -39,4 +39,4 @@ spec:
             - name: akeneo-config-prod
               mountPath: /srv/pim/app/config/config_prod.yml
               subPath: config_prod.yml
-        restartPolicy: Always
+      restartPolicy: Always
