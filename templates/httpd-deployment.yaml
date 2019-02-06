@@ -17,7 +17,7 @@ spec:
         tier: {{ template "akeneo.fullname" . }}-frontend
     spec:
       imagePullSecrets:
-          - name: myregistrykey
+      - name: {{ .Values.imagePullSecrets | quote }}
       volumes:
         - name: vhost-conf
           configMap:
