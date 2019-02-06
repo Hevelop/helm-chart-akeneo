@@ -1,9 +1,6 @@
 nameOverride: null
 
-imageCredentials:
- registry: null
- username: null
- password: null
+imagePullSecrets: null
 
 images:
  php:
