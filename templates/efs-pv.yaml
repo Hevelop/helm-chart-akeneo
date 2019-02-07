@@ -53,8 +53,8 @@ spec:
               mountPath: /persistentvolumes
       volumes:
         - name: pv-volume
-          nfs:
-            server: yourEFSsystemID.efs.yourEFSregion.amazonaws.com
+          nfs:          
+            server: {{- .Values.efsProvisioner.efsFileSystemId -}}.efs.{{- .Values.efsProvisioner.awsRegion -}}.amazonaws.com
             path: /
 ---
 kind: StorageClass
