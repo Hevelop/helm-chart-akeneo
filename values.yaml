@@ -2,6 +2,13 @@ nameOverride: null
 
 imagePullSecrets: null
 
+efsProvisioner:
+ enabled: false
+ efsProvisioner.awsRegion: null
+ efsFileSystemId: null
+ path: null
+ provisionerName: null
+ 
 images:
  php:
   repo: hevelop/ak-php

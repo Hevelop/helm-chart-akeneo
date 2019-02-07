@@ -1,0 +1,79 @@
+{{- if .Values.efsProvisioner.enabled }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "akeneo.fullname" . }}-efs-provisioner
+data:
+  file.system.id: {{ .Values.efsProvisioner.efsFileSystemId | quote }}
+  aws.region: {{ .Values.efsProvisioner.awsRegion | quote }}
+  provisioner.name: {{ .Values.efsProvisioner.provisionerName | quote }}
+  dns.name: ""
+---
+kind: Deployment
+apiVersion: extensions/v1beta1
+metadata:
+  name: {{ template "akeneo.fullname" . }}-efs-provisioner
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: {{ template "akeneo.fullname" . }}-efs-provisioner
+    spec:
+      containers:
+        - name: efs-provisioner
+          image: quay.io/external_storage/efs-provisioner:latest
+          env:
+            - name: FILE_SYSTEM_ID
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ template "akeneo.fullname" . }}-efs-provisioner
+                  key: file.system.id
+            - name: AWS_REGION
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ template "akeneo.fullname" . }}-efs-provisioner
+                  key: aws.region
+            - name: DNS_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ template "akeneo.fullname" . }}-efs-provisioner
+                  key: dns.name
+                  optional: true
+            - name: PROVISIONER_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ template "akeneo.fullname" . }}-efs-provisioner
+                  key: provisioner.name
+          volumeMounts:
+            - name: pv-volume
+              mountPath: /persistentvolumes
+      volumes:
+        - name: pv-volume
+          nfs:
+            server: yourEFSsystemID.efs.yourEFSregion.amazonaws.com
+            path: /
+---
+kind: StorageClass
+apiVersion: storage.k8s.io/v1
+metadata:
+  name: {{ template "akeneo.fullname" . }}-aws-efs
+provisioner: example.com/aws-efs
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: {{ template "akeneo.fullname" . }}-efs-pvc
+  annotations:
+    volume.beta.kubernetes.io/storage-class: {{ template "akeneo.fullname" . }}-aws-efs
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 500Gi
+---
+{{- end }}
