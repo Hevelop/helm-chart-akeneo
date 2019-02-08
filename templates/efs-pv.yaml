@@ -37,12 +37,6 @@ spec:
                 configMapKeyRef:
                   name: {{ template "akeneo.fullname" . }}-efs-provisioner
                   key: aws.region
-            - name: DNS_NAME
-              valueFrom:
-                configMapKeyRef:
-                  name: {{ template "akeneo.fullname" . }}-efs-provisioner
-                  key: dns.name
-                  optional: true
             - name: PROVISIONER_NAME
               valueFrom:
                 configMapKeyRef:
