@@ -49,9 +49,9 @@ spec:
               mountPath: /srv/pim/app/config/config_prod.yml
               subPath: config_prod.yml
             {{- if .Values.efs.enabled }}
-            {{- range $mountPath := .Values.efs.containerMountPaths }}
-            - mountPath: {{ $mountPath }}
-              subPath: {{ (trimPrefix "/" $mountPath) }}
+            {{- range $index, $val := .Values.efs.containerMountPaths }}
+            - mountPath: {{ $val }}
+              subPath: {{ (trimPrefix "/" $val) }}
               name: efs
             {{- end }}
             {{- end }}
