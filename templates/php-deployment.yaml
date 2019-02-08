@@ -27,7 +27,7 @@ spec:
         - name: akeneo-config-prod
           configMap:
             name: {{ template "akeneo.fullname" . }}-akeneo-config-prod-yml
-        {{- if .Values.efs.enable }}
+        {{- if .Values.efs.enabled }}
         - name: efs
             persistentVolumeClaim:
               claimName: {{ template "akeneo.fullname" . }}-efs-pvc
@@ -48,9 +48,11 @@ spec:
             - name: akeneo-config-prod
               mountPath: /srv/pim/app/config/config_prod.yml
               subPath: config_prod.yml
-            {{- if .Values.efs.enable }}
-            - mountPath: /media
-              subPath: media
-              name: efs       
-            {{- end }}     
+            {{- if .Values.efs.enabled }}
+            {{- range $mountPath := .Values.efs.containerMountPaths }}
+            - mountPath: {{ $mountPath }}
+              subPath: {{ (trimPrefix "/" $mountPath) }}
+              name: efs
+            {{- end }}
+            {{- end }}
       restartPolicy: Always

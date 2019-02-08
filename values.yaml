@@ -29,8 +29,9 @@ efs:
       gidMin: 40000
       gidMax: 50000
     reclaimPolicy: Delete
+  # Don't use /
   containerMountPaths: {}
-    # - /media
+    # - /media 
   ## Enable RBAC
   ##
   rbac:
