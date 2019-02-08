@@ -1,0 +1,14 @@
+{{- if .Values.efs.enabled }}
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: {{ template "akeneo.fullname" . }}-efs-pvc
+  annotations:
+    volume.beta.kubernetes.io/storage-class: {{ .Values.efs.storageClass.name }}
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 500Gi
+{{- end }}

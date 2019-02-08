@@ -1,0 +1,88 @@
+{{- if .Values.efs.enabled }}
+{{- if ne .Values.efs.efsFileSystemId "fs-12345678" }}
+{{/*
+The `efsFileSystemId` value must be set.
+
+The above `if` condition also prevents the helm integration tests from failing.
+Given that the helm test infrastructure does not have access to valid
+AWS EFS resources, a deployment that references the example `fs-12345678`
+creates pods that will never enter a clean, running state.
+
+Omitting the deployment hacks around this limitation.
+*/}}
+kind: Deployment
+apiVersion: apps/v1beta2
+metadata:
+  name: {{ template "akeneo.fullname" . }}
+  labels:
+    app: {{ template "akeneo.name" . }}
+    chart: {{ template "akeneo.chartname" . }}
+    release: "{{ .Release.Name }}"
+    heritage: "{{ .Release.Service }}"
+  annotations:
+{{ toYaml .Values.efs.annotations | indent 4 }}
+spec:
+  replicas: {{ .Values.efs.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ template "akeneo.name" . }}
+      release: "{{ .Release.Name }}"
+  revisionHistoryLimit: {{ .Values.efs.revisionHistoryLimit }}
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+    {{- if .Values.efs.podAnnotations }}
+      annotations:
+{{ toYaml .Values.efs.podAnnotations | indent 8}}
+    {{- end }}
+      labels:
+        app: {{ template "akeneo.name" . }}
+        release: "{{ .Release.Name }}"
+      annotations:
+{{ toYaml .Values.efs.annotations | indent 8 }}
+    spec:
+      serviceAccount: {{ template "akeneo.serviceAccountName" . }}
+      {{- if .Values.efs.priorityClassName }}
+      priorityClassName: "{{ .Values.efs.priorityClassName }}"
+      {{- end }}
+      containers:
+      - name: {{ template "akeneo.fullname" . }}
+        image: "{{ .Values.efs.image.repository }}:{{ .Values.efs.image.tag }}"
+        imagePullPolicy: {{ .Values.efs.image.pullPolicy }}
+        env:
+        - name: FILE_SYSTEM_ID
+          value: {{ .Values.efs.efsFileSystemId }}
+        - name: AWS_REGION
+          value: {{ .Values.efs.awsRegion }}
+        - name: PROVISIONER_NAME
+          value: {{ .Values.efs.provisionerName }}
+        volumeMounts:
+        - name: pv-volume
+          subPath: {{ (trimPrefix "/" .Values.efs.path) }}
+          mountPath: /persistentvolumes
+      {{- if ne .Values.efs.path "/" }}
+      initContainers:
+      - name: "init-path"
+        image: {{ .Values.efs.busyboxImage.repository}}:{{ .Values.efs.busyboxImage.tag}}
+        imagePullPolicy: {{ .Values.efs.busyboxImage.pullPolicy }}
+        command: [ "sh", "-c", "mkdir -p /efs-vol-root/{{ (trimPrefix "/" .Values.efs.path) }}" ]
+        volumeMounts:
+        - name: pv-volume
+          mountPath: /efs-vol-root
+      {{- end }}
+      volumes:
+      - name: pv-volume
+        nfs:
+          server: {{ .Values.efs.efsFileSystemId }}.efs.{{ .Values.efs.awsRegion }}.amazonaws.com
+          path: /
+{{- end }}
+    {{- if .Values.efs.nodeSelector }}
+      nodeSelector:
+{{ toYaml .Values.efs.nodeSelector | indent 8 }}
+    {{- end }}
+    {{- if .Values.efs.affinity }}
+      affinity:
+{{ toYaml .Values.efs.affinity | indent 8 }}
+    {{- end }}
+{{- end }}

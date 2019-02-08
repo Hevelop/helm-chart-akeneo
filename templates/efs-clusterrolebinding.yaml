@@ -1,0 +1,23 @@
+{{- if .Values.efs.enabled }}
+{{- if .Values.efs.rbac.create }}
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: {{ template "akeneo.fullname" . }}
+  labels:
+    app: {{ template "akeneo.name" . }}
+    chart: {{ template "akeneo.chartname" . }}
+    release: "{{ .Release.Name }}"
+    heritage: "{{ .Release.Service }}"
+  annotations:
+{{ toYaml .Values.efs.annotations | indent 4 }}
+subjects:
+  - kind: ServiceAccount
+    name: {{ template "akeneo.serviceAccountName" . }}
+    namespace: {{ .Release.Namespace }}
+roleRef:
+  kind: ClusterRole
+  name: {{ template "akeneo.fullname" . }}
+  apiGroup: rbac.authorization.k8s.io
+{{- end }}
+{{- end }}
