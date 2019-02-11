@@ -29,8 +29,8 @@ spec:
             name: {{ template "akeneo.fullname" . }}-httpd-conf
         {{- if .Values.efs.enabled }}
         - name: efs
-            persistentVolumeClaim:
-              claimName: {{ template "akeneo.fullname" . }}-efs-pvc
+          persistentVolumeClaim:
+            claimName: {{ template "akeneo.fullname" . }}-efs-pvc
         {{- end }}
       containers:
       - name: httpd
