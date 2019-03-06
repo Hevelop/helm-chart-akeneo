@@ -4,6 +4,8 @@ kind: Ingress
 metadata:
   name: {{ template "akeneo.fullname" . }}-ingress-httpd
   annotations:
+{{ toYaml .Values.ingress.annotations | indent 4 }}
+    {{- if .Values.ingress.controller }}
     kubernetes.io/ingress.class: {{ .Values.ingress.class }}
     alb.ingress.kubernetes.io/scheme: internet-facing
     alb.ingress.kubernetes.io/tags: {{ .Values.ingress.tags }}
@@ -11,6 +13,7 @@ metadata:
     alb.ingress.kubernetes.io/listen-ports: {{ .Values.ingress.listenPorts }}
     {{- end }}
     alb.ingress.kubernetes.io/ip-address-type: {{ .Values.ingress.addressType }}
+    {{- end }}
 spec:
   rules:
     - host: {{ .Values.ingress.host }}

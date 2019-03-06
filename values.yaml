@@ -85,6 +85,7 @@ images:
 
 ingress:
   enabled: false
+  controller: false
   awsApiDebug: false
   awsAccessKeyId: ""
   awsSecretAccessKey: ""
@@ -96,6 +97,7 @@ ingress:
   host: ""
   tags: "app=akeneo"
   addressType: ipv4
+  annotations: {}
 
 akeneo:
   parameters:
