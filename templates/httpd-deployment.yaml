@@ -30,7 +30,7 @@ spec:
         {{- if .Values.efs.enabled }}
         - name: efs
           persistentVolumeClaim:
-            claimName: {{ .Values.efs.existingClaim | default (include "akeneo.fullname" . "-efs-pvc") }}
+            claimName: {{ .Values.efs.existingClaim | default (printf "%s-efs-pvc" (include "akeneo.fullname" .)) }}
         {{- end }}
       containers:
       - name: httpd
