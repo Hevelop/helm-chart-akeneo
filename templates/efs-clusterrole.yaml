@@ -1,4 +1,4 @@
-{{- if .Values.efs.enabled }}
+{{- if and (.Values.efs.enabled) (not .Values.efs.existingClaim) }}
 {{- if .Values.efs.rbac.create }}
 kind: ClusterRole
 apiVersion: rbac.authorization.k8s.io/v1

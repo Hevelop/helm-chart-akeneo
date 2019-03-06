@@ -71,12 +71,12 @@ data:
             default:
                 type: predis
                 alias: default
-                dsn: redis://{{- .Values.akeneo.redis.host }}
+                dsn: redis://{{- .Values.akeneo.redis.default.host }}/{{- .Values.akeneo.redis.default.db }}
                 logging: %kernel.debug%
             cache:
                 type: predis
                 alias: cache
-                dsn: redis://{{- .Values.akeneo.redis.host }}/1
+                dsn: redis://{{- .Values.akeneo.redis.cache.host }}/{{- .Values.akeneo.redis.cache.db }}
                 options:
                     profile: 2.2
                     connection_timeout: 10
@@ -84,11 +84,11 @@ data:
             session:
                 type: predis
                 alias: session
-                dsn: redis://{{- .Values.akeneo.redis.host }}/2
+                dsn: redis://{{- .Values.akeneo.redis.session.host }}/{{- .Values.akeneo.redis.session.db }}
     framework:
         session:
             handler_id: snc_redis.session.handler
         cache:
             app: cache.adapter.redis
-            default_redis_provider: "redis://{{- .Values.akeneo.redis.host }}"
+            default_redis_provider: "redis://{{- .Values.akeneo.redis.framework_cache.host }}/{{- .Values.akeneo.redis.framework_cache.db }}"
 {{- end }}

@@ -4,6 +4,7 @@ imagePullSecrets: null
 
 efs:
   enabled: false
+  # existingClaim: akeneo-pvc
   replicaCount: 1
   revisionHistoryLimit: 10
   image:
@@ -112,6 +113,17 @@ akeneo:
     index_hosts: ''
 
   redis:
-   enabled: false
-   host: null
-   sessionPrefix: pim
+    enabled: false
+    default:
+      host: null
+      db: 0
+    cache:
+      host: null
+      db: 1
+    session:
+      host: null
+      db: 2
+    framework_cache:
+      host: null
+      db: 0
+    sessionPrefix: pim

@@ -1,4 +1,4 @@
-{{- if .Values.efs.enabled }}
+{{- if and (.Values.efs.enabled) (not .Values.efs.existingClaim) }}
 {{- if ne .Values.efs.efsFileSystemId "fs-12345678" }}
 {{/*
 The `efsFileSystemId` value must be set.
