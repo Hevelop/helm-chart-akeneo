@@ -50,9 +50,11 @@ spec:
             - name: akeneo-parameters
               mountPath: /srv/pim/app/config/parameters.yml
               subPath: parameters.yml
+            {{- if .Values.akeneo.redis.enabled }}
             - name: akeneo-config-prod
               mountPath: /srv/pim/app/config/config_prod.yml
               subPath: config_prod.yml
+            {{- end }}
             {{- if .Values.efs.enabled }}
             {{- range $index, $val := .Values.efs.containerMountPaths }}
             - mountPath: {{ $val }}
