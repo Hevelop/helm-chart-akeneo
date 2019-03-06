@@ -27,9 +27,11 @@ spec:
         - name: akeneo-parameters
           configMap:
             name: {{ template "akeneo.fullname" . }}-akeneo-parameters-yml
+        {{- if .Values.akeneo.redis.enabled }}
         - name: akeneo-config-prod
           configMap:
             name: {{ template "akeneo.fullname" . }}-akeneo-config-prod-yml
+        {{- end }}
         {{- if .Values.efs.enabled }}
         - name: efs
           persistentVolumeClaim:
