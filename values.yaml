@@ -129,3 +129,6 @@ akeneo:
       host: null
       db: 0
     sessionPrefix: pim
+
+phpfpm:
+  listenPort: 9001

@@ -72,7 +72,7 @@ data:
     </IfModule>
     
     <FilesMatch \.php$>
-        SetHandler "proxy:fcgi://{{ template "akeneo.fullname" . }}-service-php:9001"
+        SetHandler "proxy:fcgi://{{ template "akeneo.fullname" . }}-service-php:{{ .Values.phpfpm.listenPort }}"
     </FilesMatch>
     
     SetEnvIf Authorization .+ HTTP_AUTHORIZATION=$0
