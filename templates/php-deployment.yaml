@@ -45,7 +45,7 @@ spec:
             value: /home/docker/.composer
           workingDir: /srv/pim
           ports:
-          - containerPort: 9001
+          - containerPort: {{ .Values.phpfpm.listenPort }}
           volumeMounts:
             - name: akeneo-parameters
               mountPath: /srv/pim/app/config/parameters.yml
