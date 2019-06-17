@@ -31,7 +31,7 @@ spec:
         {{- end }}
       containers:
         - name: php-cli
-          image: "{{ .Values.images.php.repo -}} : {{- .Values.images.php.tag }}"
+          image: "{{ .Values.images.phpcli.repo -}} : {{- .Values.images.phpcli.tag }}"
           env:
           - name: COMPOSER_HOME
             value: /home/docker/.composer
