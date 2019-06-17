@@ -24,21 +24,13 @@ spec:
       - name: {{ .Values.imagePullSecrets | quote }}
       {{- end }}
       volumes:
-        - name: akeneo-parameters
-          configMap:
-            name: {{ template "akeneo.fullname" . }}-akeneo-parameters-yml
-        {{- if .Values.akeneo.redis.enabled }}
-        - name: akeneo-config-prod
-          configMap:
-            name: {{ template "akeneo.fullname" . }}-akeneo-config-prod-yml
-        {{- end }}
         {{- if .Values.efs.enabled }}
         - name: efs
           persistentVolumeClaim:
             claimName: {{ .Values.efs.existingClaim | default (printf "%s-efs-pvc" (include "akeneo.fullname" .)) }}
         {{- end }}
       containers:
-        - name: php
+        - name: php-cli
           image: "{{ .Values.images.php.repo -}} : {{- .Values.images.php.tag }}"
           env:
           - name: COMPOSER_HOME
