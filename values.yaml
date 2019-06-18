@@ -79,6 +79,9 @@ images:
  php:
   repo: hevelop/ak-php
   tag: latest
+ phpcli:
+  repo: hevelop/ak-php
+  tag: latest
  httpd:
   repo: hevelop/ak-httpd
   tag: latest
