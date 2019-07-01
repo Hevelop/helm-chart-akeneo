@@ -42,7 +42,7 @@ spec:
                 - mountPath: /efs
                   name: efs
                 {{- range $index, $val := $.Values.efs.containerMountPaths }}
-                - mountPath: "/var/www/deploy{{ $val }}"
+                - mountPath: "/srv/pim{{ $val }}"
                   subPath: {{ (trimPrefix "/" $val) }}
                   name: efs
                 {{- end }}
