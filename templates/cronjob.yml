@@ -38,11 +38,11 @@ spec:
                 - "/bin/sh"
                 - "www-data"
               volumeMounts:
-              {{- if or $.Values.efs.enabled $.Values.efs.existingPvcName }}
+              {{- if or $.Values.efs.enabled $.Values.efs.existingClaim }}
                 - mountPath: /efs
                   name: efs
                 {{- range $index, $val := $.Values.efs.containerMountPaths }}
-                - mountPath: "/srv/pim{{ $val }}"
+                - mountPath: "{{ $val }}"
                   subPath: {{ (trimPrefix "/" $val) }}
                   name: efs
                 {{- end }}
@@ -55,10 +55,10 @@ spec:
             persistentVolumeClaim:
               claimName: {{ template "akeneo.fullname" . }}-efs-pvc
           {{- end }}
-          {{- if and $.Values.efs.existingPvcName (not $.Values.efs.enabled) }}
+          {{- if and $.Values.efs.existingClaim (not $.Values.efs.enabled) }}
           - name: efs
             persistentVolumeClaim:
-              claimName: {{ $.Values.efs.existingPvcName }}
+              claimName: {{ $.Values.efs.existingClaim }}
           {{- end }}
           restartPolicy: Never
 {{- end }}
