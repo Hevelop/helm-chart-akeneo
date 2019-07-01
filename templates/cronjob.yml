@@ -1,0 +1,65 @@
+{{- range $job := .Values.jobs }}
+{{- $cron_image := printf "%s/%s:%s" $job.registry $job.repository $job.tag -}}
+{{- if $job.enabled }}
+---
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: {{ template "akeneo.fullname" . }}-cron-{{ $job.name }}
+  labels:
+    app: {{ template "akeneo.fullname" . }}-cron-{{ $job.name }}
+spec:
+  schedule: {{ $job.schedule | quote }}
+  successfulJobsHistoryLimit: {{ $job.successfulJobsHistoryLimit }}
+  concurrencyPolicy: {{ $job.concurrencyPolicy }}
+  failedJobsHistoryLimit: {{ $job.failedJobsHistoryLimit }}
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            app: {{ template "akeneo.fullname" . }}-cron-{{ $job.name }}
+        spec:
+          {{- if $.Values.pullSecrets }}
+          imagePullSecrets:
+            {{- range $.Values.pullSecrets }}
+            - name: {{ . }}
+            {{- end}}
+          {{- end }}
+          containers:
+            - name: {{ template "akeneo.fullname" . }}-cronjob-{{ $job.name }}
+              image: {{ $cron_image }}
+              imagePullPolicy: {{ $job.pullPolicy | quote }}
+              command:
+                - "su"
+                - "-c"
+                - {{ $job.command | quote }}
+                - "-s"
+                - "/bin/sh"
+                - "www-data"
+              volumeMounts:
+              {{- if or $.Values.efs.enabled $.Values.efs.existingPvcName }}
+                - mountPath: /efs
+                  name: efs
+                {{- range $index, $val := $.Values.efs.containerMountPaths }}
+                - mountPath: "/var/www/deploy{{ $val }}"
+                  subPath: {{ (trimPrefix "/" $val) }}
+                  name: efs
+                {{- end }}
+              {{- end }}
+              resources:
+{{ toYaml $job.resources | indent 16 }}
+          volumes:
+          {{- if $.Values.efs.enabled }}
+          - name: efs
+            persistentVolumeClaim:
+              claimName: {{ template "akeneo.fullname" . }}-efs-pvc
+          {{- end }}
+          {{- if and $.Values.efs.existingPvcName (not $.Values.efs.enabled) }}
+          - name: efs
+            persistentVolumeClaim:
+              claimName: {{ $.Values.efs.existingPvcName }}
+          {{- end }}
+          restartPolicy: Never
+{{- end }}
+{{- end }}
