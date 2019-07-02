@@ -1,4 +1,5 @@
 {{- $akeneo_fullname := include "akeneo.fullname" . }}
+{{- $existingClaim := .Values.efs.existingClaim | default (printf "%s-efs-pvc" (include "akeneo.fullname" .)) }}
 {{- range $job := .Values.jobs }}
 {{- $cron_image := printf "%s/%s:%s" $job.registry $job.repository $job.tag -}}
 {{- if $job.enabled }}
@@ -48,11 +49,11 @@ spec:
               {{- end }}
               resources:
 {{ toYaml $job.resources | indent 16 }}
-          volumes:                    
-          {{- if .Values.efs.enabled }}
+          volumes:          
+          {{- if $existingClaim }}
           - name: efs
             persistentVolumeClaim:
-              claimName: {{ .Values.efs.existingClaim | default (printf "%s-efs-pvc" (include "akeneo.fullname" .)) }}
+              claimName: {{ $existingClaim }}
           {{- end }}
           restartPolicy: Never
 {{- end }}
