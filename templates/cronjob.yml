@@ -48,16 +48,11 @@ spec:
               {{- end }}
               resources:
 {{ toYaml $job.resources | indent 16 }}
-          volumes:
-          {{- if $.Values.efs.enabled }}
+          volumes:                    
+          {{- if .Values.efs.enabled }}
           - name: efs
             persistentVolumeClaim:
-              claimName: {{ $akeneo_fullname }}-efs-pvc
-          {{- end }}
-          {{- if and $.Values.efs.existingClaim (not $.Values.efs.enabled) }}
-          - name: efs
-            persistentVolumeClaim:
-              claimName: {{ $.Values.efs.existingClaim }}
+              claimName: {{ .Values.efs.existingClaim | default (printf "%s-efs-pvc" (include "akeneo.fullname" .)) }}
           {{- end }}
           restartPolicy: Never
 {{- end }}
