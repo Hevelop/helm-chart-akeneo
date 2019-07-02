@@ -39,9 +39,7 @@ spec:
                 - "/bin/sh"
                 - "www-data"
               volumeMounts:
-              {{- if or $.Values.efs.enabled $.Values.efs.existingClaim }}
-                - mountPath: /efs
-                  name: efs
+              {{- if or $.Values.efs.enabled $.Values.efs.existingClaim }}                
                 {{- range $index, $val := $.Values.efs.containerMountPaths }}
                 - mountPath: "{{ $val }}"
                   subPath: {{ (trimPrefix "/" $val) }}
