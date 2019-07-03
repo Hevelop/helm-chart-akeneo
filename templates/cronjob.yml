@@ -32,13 +32,8 @@ spec:
             - name: {{ $akeneo_fullname }}-cronjob-{{ $job.name }}
               image: {{ $cron_image }}
               imagePullPolicy: {{ $job.pullPolicy | quote }}
-              command:
-                - "su"
-                - "-c"
-                - {{ $job.command | quote }}
-                - "-s"
-                - "/bin/sh"
-                - "www-data"
+              command:                
+                - {{ $job.command | quote }}                
               volumeMounts:
               {{- if or $.Values.efs.enabled $.Values.efs.existingClaim }}                
                 {{- range $index, $val := $.Values.efs.containerMountPaths }}
