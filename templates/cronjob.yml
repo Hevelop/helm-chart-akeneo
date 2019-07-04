@@ -30,8 +30,14 @@ spec:
           containers:
             - name: {{ $akeneo_fullname }}-cronjob-{{ $job.name }}
               image: {{ $cron_image }}
-              imagePullPolicy: {{ $job.pullPolicy | quote }}
-              command: {{ $job.command }}
+              imagePullPolicy: {{ $job.pullPolicy | quote }}              
+              command:
+              - su
+              - www-data
+              - -s
+              - /bin/sh 
+              - -c
+              - {{ $job.command }}
               volumeMounts:
               {{- if or $.Values.efs.enabled $.Values.efs.existingClaim }}                
                 {{- range $index, $val := $.Values.efs.containerMountPaths }}
