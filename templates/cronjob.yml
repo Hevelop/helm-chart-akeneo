@@ -1,5 +1,4 @@
 {{- $akeneo_fullname := include "akeneo.fullname" . }}
-{{- $existingClaim := .Values.efs.existingClaim | default (printf "%s-efs-pvc" (include "akeneo.fullname" .)) }}
 {{- range $job := .Values.jobs }}
 {{- $cron_image := printf "%s/%s:%s" $job.registry $job.repository $job.tag -}}
 {{- if $job.enabled }}
@@ -35,7 +34,13 @@ spec:
             - name: {{ $akeneo_fullname }}-cronjob-{{ $job.name }}
               image: {{ $cron_image }}
               imagePullPolicy: {{ $job.pullPolicy | quote }}
-              command: {{ $job.command }}
+              command:
+              - su
+              - www-data
+              - -s
+              - /bin/sh
+              - -c
+              - {{ $job.command }}
               volumeMounts:
               {{- if or $.Values.efs.enabled $.Values.efs.existingClaim }}                
                 {{- range $index, $val := $.Values.efs.containerMountPaths }}
@@ -46,12 +51,16 @@ spec:
               {{- end }}
               resources:
 {{ toYaml $job.resources | indent 16 }}
-          volumes:          
-          {{- if $existingClaim }}
+          volumes:
+          {{ if $.Values.efs.existingClaim }}
           - name: efs
             persistentVolumeClaim:
-              claimName: {{ $existingClaim }}
-          {{- end }}
+              claimName: {{ $.Values.efs.existingClaim }}
+          {{ else if $.Values.efs.enabled }}
+          - name: efs
+          persistentVolumeClaim:
+            claimName: {{ $akeneo_fullname }}-efs-pvc
+          {{ end }}
           restartPolicy: {{ $job.restartPolicy | default "Never" }}
 {{- end }}
 {{- end }}
