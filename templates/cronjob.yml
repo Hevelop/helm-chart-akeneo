@@ -12,6 +12,9 @@ metadata:
     app: {{ $akeneo_fullname }}-cron-{{ $job.name }}
 spec:
   schedule: {{ $job.schedule | quote }}
+  {{- if has $job.startingDeadlineSeconds }}
+  startingDeadlineSeconds: {{ $job.startingDeadlineSeconds }}
+  {{- end }}
   successfulJobsHistoryLimit: {{ $job.successfulJobsHistoryLimit }}
   concurrencyPolicy: {{ $job.concurrencyPolicy }}
   failedJobsHistoryLimit: {{ $job.failedJobsHistoryLimit }}
@@ -49,6 +52,6 @@ spec:
             persistentVolumeClaim:
               claimName: {{ $existingClaim }}
           {{- end }}
-          restartPolicy: Never
+          restartPolicy: {{ $job.restartPolicy | default "Never" }}
 {{- end }}
 {{- end }}
