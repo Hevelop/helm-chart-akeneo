@@ -1,3 +1,4 @@
+{{- if .Values.images.phpcli }}
 {{- if .Values.efs.enabled }}
 apiVersionssss: apps/v88888
 {{- end }}
@@ -47,3 +48,4 @@ spec:
             {{- end }}
             {{- end }}
       restartPolicy: Always
+{{- end }}
