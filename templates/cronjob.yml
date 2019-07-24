@@ -11,7 +11,7 @@ metadata:
     app: {{ $akeneo_fullname }}-cron-{{ $job.name }}
 spec:
   schedule: {{ $job.schedule | quote }}
-  {{- if has $job.startingDeadlineSeconds }}
+  {{- if $job.startingDeadlineSeconds }}
   startingDeadlineSeconds: {{ $job.startingDeadlineSeconds }}
   {{- end }}
   successfulJobsHistoryLimit: {{ $job.successfulJobsHistoryLimit }}
