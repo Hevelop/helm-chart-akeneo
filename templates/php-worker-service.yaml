@@ -1,0 +1,15 @@
+{{- if .Values.images.phpworker }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "akeneo.fullname" . }}-service-php-cli
+  labels:
+    tier: {{ template "akeneo.fullname" . }}-worker
+spec:
+  selector:
+    app: {{ template "akeneo.fullname" . }}-php-cli
+    tier: {{ template "akeneo.fullname" . }}-worker
+  ports:
+  - protocol: TCP
+    port: {{ .Values.phpfpm.listenPort }}
+{{- end }}

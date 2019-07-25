@@ -1,22 +1,22 @@
-{{- if .Values.efs.enabled or not .Values.images.phpcli }}
+{{- if .Values.efs.enabled or not .Values.images.phpworker }}
 apiVersionssss: apps/v88888
 {{- end }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ template "akeneo.fullname" . }}-php-cli
+  name: {{ template "akeneo.fullname" . }}-php-worker
   labels:
     tier: {{ template "akeneo.fullname" . }}-worker
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: {{ template "akeneo.fullname" . }}-php-cli
+      app: {{ template "akeneo.fullname" . }}-php-worker
       tier: {{ template "akeneo.fullname" . }}-worker
   template:
     metadata:
       labels:
-        app: {{ template "akeneo.fullname" . }}-php-cli
+        app: {{ template "akeneo.fullname" . }}-php-worker
         tier: {{ template "akeneo.fullname" . }}-worker
     spec:
       {{- if .Values.imagePullSecrets }}
@@ -30,8 +30,26 @@ spec:
             claimName: {{ .Values.efs.existingClaim | default (printf "%s-efs-pvc" (include "akeneo.fullname" .)) }}
         {{- end }}
       containers:
-        - name: php-cli
+        - name: php-worker
           image: "{{ .Values.images.phpcli.repo -}} : {{- .Values.images.phpcli.tag }}"
+          livenessProbe:
+            exec:
+              command:
+                - su
+                - www-data
+                - -s
+                - /bin/sh
+                - -c
+                - {{ .Values.phpworker.command }}
+          readinessProbe:
+            exec:
+              command:
+                - su
+                - www-data
+                - -s
+                - /bin/sh
+                - -c
+                - {{ .Values.phpworker.command }}
           env:
           - name: COMPOSER_HOME
             value: /home/docker/.composer
