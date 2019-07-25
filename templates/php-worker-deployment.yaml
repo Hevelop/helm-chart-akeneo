@@ -1,7 +1,7 @@
 {{- if .Values.efs.enabled }}
 apiVersionssss: apps/v88888
 {{- end }}
-{{- if not .Values.images.phpworker }}
+{{- if .Values.phpworker.enabled }}
 apiVersionssss: apps/v88888
   {{- end }}
 apiVersion: apps/v1
