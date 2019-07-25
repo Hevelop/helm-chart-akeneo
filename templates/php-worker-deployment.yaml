@@ -34,7 +34,7 @@ spec:
         {{- end }}
       containers:
         - name: php-worker
-          image: "{{ .Values.images.phpcli.repo -}} : {{- .Values.images.phpcli.tag }}"
+          image: "{{ .Values.images.phpworker.repo -}} : {{- .Values.images.phpworker.tag }}"
           livenessProbe:
             exec:
               command:
