@@ -35,24 +35,13 @@ spec:
       containers:
         - name: php-worker
           image: "{{ .Values.images.phpworker.repo -}} : {{- .Values.images.phpworker.tag }}"
-          livenessProbe:
-            exec:
-              command:
-                - su
-                - www-data
-                - -s
-                - /bin/sh
-                - -c
-                - {{ .Values.phpworker.command }}
-          readinessProbe:
-            exec:
-              command:
-                - su
-                - www-data
-                - -s
-                - /bin/sh
-                - -c
-                - {{ .Values.phpworker.command }}
+          command:
+            - su
+            - www-data
+            - -s
+            - /bin/sh
+            - -c
+            - {{ .Values.phpworker.command }}
           env:
           - name: COMPOSER_HOME
             value: /home/docker/.composer
