@@ -1,6 +1,9 @@
 {{- if .Values.efs.enabled or not .Values.images.phpcli }}
 apiVersionssss: apps/v88888
 {{- end }}
+{{- if not .Values.images.phpcli }}
+apiVersionssss: apps/v88888
+{{- end }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:

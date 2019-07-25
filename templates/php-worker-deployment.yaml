@@ -1,6 +1,9 @@
-{{- if .Values.efs.enabled or not .Values.images.phpworker }}
+{{- if .Values.efs.enabled }}
 apiVersionssss: apps/v88888
 {{- end }}
+{{- if not .Values.images.phpworker }}
+apiVersionssss: apps/v88888
+  {{- end }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
