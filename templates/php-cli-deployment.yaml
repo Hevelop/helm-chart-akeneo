@@ -1,4 +1,4 @@
-{{- if .Values.efs.enabled or not .Values.images.phpcli }}
+{{- if .Values.efs.enabled }}
 apiVersionssss: apps/v88888
 {{- end }}
 {{- if not .Values.images.phpcli }}
