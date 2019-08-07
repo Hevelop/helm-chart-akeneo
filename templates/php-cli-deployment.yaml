@@ -41,6 +41,21 @@ spec:
           workingDir: /srv/pim
           ports:
           - containerPort: {{ .Values.phpfpm.listenPort }}
+          {{- if or (eq .Values.phpfpm.limits.enabled true) (eq .Values.phpfpm.requests.enabled true) }}
+          resources:
+            {{- if .Values.phpfpm.limits.enabled }}
+            limits:
+              cpu: {{ .Values.phpfpm.limits.cpu }}
+              memory: {{ .Values.phpfpm.limits.memory }}
+            {{- end }}
+            {{- if .Values.phpfpm.requests.enabled}}
+            requests:
+              cpu: {{ .Values.phpfpm.requests.cpu }}
+              memory: {{ .Values.phpfpm.requests.memory }}
+            {{- end }}
+          {{- else }}
+          resources: {}
+          {{- end }}
           volumeMounts:
             {{- if .Values.efs.enabled }}
             {{- range $index, $val := .Values.efs.containerMountPaths }}

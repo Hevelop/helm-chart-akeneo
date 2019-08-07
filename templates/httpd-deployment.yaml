@@ -37,6 +37,21 @@ spec:
         image: "{{ .Values.images.httpd.repo -}} : {{- .Values.images.httpd.tag }}"
         ports:
         - containerPort: 80
+        {{- if or (eq .Values.httpd.limits.enabled true) (eq .Values.httpd.requests.enabled true) }}
+        resources:
+          {{- if .Values.httpd.limits.enabled }}
+          limits:
+            cpu: {{ .Values.httpd.limits.cpu }}
+            memory: {{ .Values.httpd.limits.memory }}
+          {{- end }}
+          {{- if .Values.httpd.requests.enabled}}
+          requests:
+            cpu: {{ .Values.httpd.requests.cpu }}
+            memory: {{ .Values.httpd.requests.memory }}
+          {{- end }}
+        {{- else }}
+        resources: {}
+        {{- end }}
         volumeMounts:
           - name: vhost-conf
             mountPath: /usr/local/apache2/conf/vhost.conf
