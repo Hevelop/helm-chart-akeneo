@@ -1,3 +1,4 @@
+{{- $userPermissions := .Values.phpfpm.userPermissions }}
 {{- if .Values.efs.enabled }}
 apiVersionssss: apps/v88888
 {{- end }}
@@ -29,6 +30,28 @@ spec:
           persistentVolumeClaim:
             claimName: {{ .Values.efs.existingClaim | default (printf "%s-efs-pvc" (include "akeneo.fullname" .)) }}
         {{- end }}
+      {{- if or .Values.efs.enabled .Values.efs.existingClaim }}
+      {{- if .Values.phpfpm.volumePermissionEnabled }}
+      initContainers:
+      - name: volume-permissions
+        image: alpine
+        command: ["/bin/sh","-c"]
+        args: 
+        - |
+          chown -c {{ .Values.phpfpm.userPermissions }}:{{ .Values.phpfpm.userPermissions }} /efs &&
+        {{- range $index, $val := .Values.efs.containerMountPaths }}
+          chown -c {{ $userPermissions }}:{{ $userPermissions }} {{ $val }} &&
+        {{- end }}
+        volumeMounts:
+        - mountPath: /efs
+          name: efs
+        {{- range $index, $val := .Values.efs.containerMountPaths }}
+        - mountPath: {{ $val }}
+          subPath: {{ (trimPrefix "/" $val) }}
+          name: efs
+        {{- end }}
+      {{- end }}
+      {{- end }}
       containers:
         - name: php
           image: "{{ .Values.images.php.repo -}} : {{- .Values.images.php.tag }}"

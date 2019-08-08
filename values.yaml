@@ -134,6 +134,8 @@ akeneo:
     sessionPrefix: pim
 
 phpfpm:
+  volumePermissionEnabled: false
+  userPermissions: 1000
   listenPort: 9001
   requests:
     enabled: true
