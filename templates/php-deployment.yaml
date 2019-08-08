@@ -42,6 +42,7 @@ spec:
         {{- range $index, $val := .Values.efs.containerMountPaths }}
           chown -c {{ $userPermissions }}:{{ $userPermissions }} {{ $val }} &&
         {{- end }}
+          ls -la /srv/pim
         volumeMounts:
         - mountPath: /efs
           name: efs
