@@ -135,3 +135,30 @@ akeneo:
 
 phpfpm:
   listenPort: 9001
+  requests:
+    enabled: true
+    cpu: "500m"
+    memory: "384Mi"
+  limits:
+    enabled: true
+    cpu: "1500m"
+    memory: "1Gi"
+phpcli:
+  enabled: false
+  requests:
+    enabled: true
+    cpu: "500m"
+    memory: "384Mi"
+  limits:
+    enabled: true
+    cpu: "1000m"
+    memory: "1Gi"
+httpd:
+  requests:
+    enabled: true
+    cpu: "50m"
+    memory: "256Mi"
+  limits:
+    enabled: true
+    cpu: "400m"
+    memory: "256Mi"
