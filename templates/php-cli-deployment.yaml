@@ -1,9 +1,4 @@
-{{- if .Values.efs.enabled }}
-apiVersionssss: apps/v88888
-{{- end }}
-  {{- if .Values.phpcli.enabled }}
-apiVersionssss: apps/v88888
-{{- end }}
+{{- if .Values.phpcli.enabled }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -65,3 +60,4 @@ spec:
             {{- end }}
             {{- end }}
       restartPolicy: Always
+{{- end }}
