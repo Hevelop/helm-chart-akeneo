@@ -14,6 +14,9 @@ spec:
   {{- if $job.startingDeadlineSeconds }}
   startingDeadlineSeconds: {{ $job.startingDeadlineSeconds }}
   {{- end }}
+  {{- if $job.activeDeadlineSeconds }}
+  activeDeadlineSeconds: {{ $job.activeDeadlineSeconds }}
+  {{- end }}
   successfulJobsHistoryLimit: {{ $job.successfulJobsHistoryLimit }}
   concurrencyPolicy: {{ $job.concurrencyPolicy }}
   failedJobsHistoryLimit: {{ $job.failedJobsHistoryLimit }}
