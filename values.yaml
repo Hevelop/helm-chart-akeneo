@@ -79,7 +79,13 @@ hostpath:
   enabled: false
   path: /hostpath
   type: DirectoryOrCreate
-  containerMountPaths: {}
+  containerMountPaths:
+    - "/srv/pim/web/media"
+    - "/srv/pim/app/file_storage"
+    - "/tmp/pim"
+    - "/var/import"
+    - "/var/export"
+    - "/var/logs"
   storageClass:
     name: hostpath
 
