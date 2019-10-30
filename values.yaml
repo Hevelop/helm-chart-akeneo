@@ -88,6 +88,12 @@ hostpath:
     - "/var/logs"
   storageClass:
     name: hostpath
+    isDefault: false
+    gidAllocate:
+      enabled: true
+      gidMin: 40000
+      gidMax: 50000
+    reclaimPolicy: Delete
 
 images:
  php:
