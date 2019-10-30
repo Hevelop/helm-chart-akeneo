@@ -75,7 +75,7 @@ spec:
           {{- range $index, $val := .Values.hostpath.containerMountPaths }}
           - mountPath: {{ $val }}
             subPath: {{ (trimPrefix "/" $val) }}
-            name: efs
+            name: hostpath
           {{- end }}
           {{- end }}
       restartPolicy: Always
