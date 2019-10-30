@@ -86,6 +86,7 @@ hostpath:
     - "/var/import"
     - "/var/export"
     - "/var/logs"
+  provisionerName: example.com/hostpath
   storageClass:
     name: hostpath
     isDefault: false
