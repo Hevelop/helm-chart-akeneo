@@ -30,26 +30,52 @@ spec:
           persistentVolumeClaim:
             claimName: {{ .Values.efs.existingClaim | default (printf "%s-efs-pvc" (include "akeneo.fullname" .)) }}
         {{- end }}
-      {{- if or .Values.efs.enabled .Values.efs.existingClaim }}
+        {{- if .Values.hostpath.enabled }}
+        - name: hostpath
+          hostPath:
+            # directory location on host
+            path: {{ .Values.hostpath.path }}
+            # this field is optional
+            type: Directory
+        {{- end }}
+      {{- if or .Values.efs.enabled .Values.efs.existingClaim .Values.hostpath.enabled }}
       {{- if .Values.phpfpm.volumePermissionEnabled }}
       initContainers:
       - name: volume-permissions
         image: alpine
         command: ["/bin/sh","-c"]
-        args: 
+        args:
         - |-
           chown -c {{ .Values.phpfpm.userPermissions }}:{{ .Values.phpfpm.userPermissions }} /efs &&
+        {{- if or .Values.efs.enabled .Values.efs.existingClaim }}
         {{- range $index, $val := .Values.efs.containerMountPaths }}
           chown -c {{ $userPermissions }}:{{ $userPermissions }} {{ $val }} &&
         {{- end }}
+        {{- end }}
+        {{- if .Values.hostpath.enabled }}
+        {{- range $index, $val := .Values.hostpath.containerMountPaths }}
+          chown -c {{ $userPermissions }}:{{ $userPermissions }} {{ $val }} &&
+        {{- end }}
+        {{- end }}
           ls -la /srv/pim
         volumeMounts:
+        {{- if or .Values.efs.enabled .Values.efs.existingClaim }}
         - mountPath: /efs
           name: efs
         {{- range $index, $val := .Values.efs.containerMountPaths }}
         - mountPath: {{ $val }}
           subPath: {{ (trimPrefix "/" $val) }}
           name: efs
+        {{- end }}
+        {{- end }}
+        {{- if .Values.hostpath.enabled }}
+        - mountPath: /hostpath
+          name: hostpath
+        {{- range $index, $val := .Values.hostpath.containerMountPaths }}
+        - mountPath: {{ $val }}
+          subPath: {{ (trimPrefix "/" $val) }}
+          name: hostpath
+        {{- end }}
         {{- end }}
       {{- end }}
       {{- end }}
@@ -83,6 +109,13 @@ spec:
             - mountPath: {{ $val }}
               subPath: {{ (trimPrefix "/" $val) }}
               name: efs
+            {{- end }}
+            {{- end }}
+            {{- if .Values.hostpath.enabled }}
+            {{- range $index, $val := .Values.hostpath.containerMountPaths }}
+            - mountPath: {{ $val }}
+              subPath: {{ (trimPrefix "/" $val) }}
+              name: hostpath
             {{- end }}
             {{- end }}
       restartPolicy: Always
