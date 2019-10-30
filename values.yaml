@@ -77,6 +77,8 @@ efs:
 
 hostpath:
   enabled: false
+  path: /hostpath
+  type: DirectoryOrCreate
   containerMountPaths: {}
 
 images:
