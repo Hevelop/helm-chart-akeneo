@@ -64,7 +64,7 @@ spec:
               name: efs
             {{- end }}
             {{- end }}
-            {{- if or .Values.hostpath.enabled }}
+            {{- if .Values.hostpath.enabled }}
             {{- range $index, $val := .Values.hostPath.containerMountPaths }}
             - mountPath: {{ $val }}
               subPath: {{ (trimPrefix "/" $val) }}
