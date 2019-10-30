@@ -1,5 +1,5 @@
 {{- $userPermissions := .Values.phpfpm.userPermissions }}
-{{- if .Values.efs.enabled }}
+{{- if or .Values.efs.enabled .Values.hostpath.enabled }}
 apiVersionssss: apps/v88888
 {{- end }}
 apiVersion: apps/v1

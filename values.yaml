@@ -74,7 +74,11 @@ efs:
     #  memory: 128Mi
 
   priorityClassName: ""
- 
+
+hostpath:
+  enabled: false
+  containerMountPaths: {}
+
 images:
  php:
   repo: hevelop/ak-php
