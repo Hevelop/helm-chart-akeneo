@@ -80,6 +80,8 @@ hostpath:
   path: /hostpath
   type: DirectoryOrCreate
   containerMountPaths: {}
+  storageClass:
+    name: hostpath
 
 images:
  php:

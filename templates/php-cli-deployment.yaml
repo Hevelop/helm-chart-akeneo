@@ -27,6 +27,11 @@ spec:
           persistentVolumeClaim:
             claimName: {{ .Values.efs.existingClaim | default (printf "%s-efs-pvc" (include "akeneo.fullname" .)) }}
         {{- end }}
+        {{- if or .Values.hostpath.enabled .Values.hostpath.existingClaim }}
+        - name: hostpath
+          persistentVolumeClaim:
+            claimName: {{ .Values.hostpath.existingClaim | default (printf "%s-hostpath-pvc" (include "akeneo.fullname" .)) }}
+        {{- end }}
       containers:
         - name: php-cli
           image: "{{ .Values.images.phpcli.repo -}} : {{- .Values.images.phpcli.tag }}"
@@ -57,6 +62,13 @@ spec:
             - mountPath: {{ $val }}
               subPath: {{ (trimPrefix "/" $val) }}
               name: efs
+            {{- end }}
+            {{- end }}
+            {{- if or .Values.hostpath.enabled .Values.hostpath.existingClaim }}
+            {{- range $index, $val := .Values.hostPath.containerMountPaths }}
+            - mountPath: {{ $val }}
+              subPath: {{ (trimPrefix "/" $val) }}
+              name: hostPath
             {{- end }}
             {{- end }}
       restartPolicy: Always

@@ -1,0 +1,14 @@
+{{- if and (.Values.hostpath.enabled) (not .Values.hostpath.existingClaim) }}
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: {{ template "akeneo.fullname" . }}-hostpath-pvc
+  annotations:
+    volume.beta.kubernetes.io/storage-class: {{ .Values.hostpath.storageClass.name }}
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 40Gi
+{{- end }}

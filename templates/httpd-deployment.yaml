@@ -32,6 +32,11 @@ spec:
           persistentVolumeClaim:
             claimName: {{ .Values.efs.existingClaim | default (printf "%s-efs-pvc" (include "akeneo.fullname" .)) }}
         {{- end }}
+        {{- if .Values.hostpath.enabled }}
+        - name: efs
+          persistentVolumeClaim:
+            claimName: {{ .Values.hostpath.existingClaim | default (printf "%s-hostpath-pvc" (include "akeneo.fullname" .)) }}
+        {{- end }}
       containers:
       - name: httpd
         image: "{{ .Values.images.httpd.repo -}} : {{- .Values.images.httpd.tag }}"
@@ -61,6 +66,13 @@ spec:
             subPath: httpd.conf
           {{- if .Values.efs.enabled }}
           {{- range $index, $val := .Values.efs.containerMountPaths }}
+          - mountPath: {{ $val }}
+            subPath: {{ (trimPrefix "/" $val) }}
+            name: efs
+          {{- end }}
+          {{- end }}
+          {{- if .Values.hostpath.enabled }}
+          {{- range $index, $val := .Values.hostpath.containerMountPaths }}
           - mountPath: {{ $val }}
             subPath: {{ (trimPrefix "/" $val) }}
             name: efs

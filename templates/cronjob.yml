@@ -52,6 +52,13 @@ spec:
                   name: efs
                 {{- end }}
               {{- end }}
+              {{- if or $.Values.hostpath.enabled $.Values.hostpath.existingClaim }}
+                {{- range $index, $val := $.Values.hostpath.containerMountPaths }}
+                - mountPath: "{{ $val }}"
+                  subPath: {{ (trimPrefix "/" $val) }}
+                  name: efs
+                {{- end }}
+              {{- end }}
               resources:
 {{ toYaml $job.resources | indent 16 }}
           volumes:
@@ -63,6 +70,14 @@ spec:
           - name: efs
           persistentVolumeClaim:
             claimName: {{ $akeneo_fullname }}-efs-pvc
+          {{ else if $.Values.hostpath.existingClaim }}
+          - name: hostpath
+            persistentVolumeClaim:
+              claimName: {{ $.Values.hostpath.existingClaim }}
+          {{ else if $.Values.hostpath.enabled }}
+          - name: hostpath
+          persistentVolumeClaim:
+            claimName: {{ $akeneo_fullname }}-hostpath-pvc
           {{ end }}
           restartPolicy: {{ $job.restartPolicy | default "Never" }}
 {{- end }}
