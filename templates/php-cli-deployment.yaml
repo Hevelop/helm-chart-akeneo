@@ -27,7 +27,7 @@ spec:
           persistentVolumeClaim:
             claimName: {{ .Values.efs.existingClaim | default (printf "%s-efs-pvc" (include "akeneo.fullname" .)) }}
         {{- end }}
-        {{- if or .Values.hostpath.enabled .Values.hostpath.existingClaim }}
+        {{- if .Values.hostpath.enabled }}
         - name: hostpath
           persistentVolumeClaim:
             claimName: {{ .Values.hostpath.existingClaim | default (printf "%s-hostpath-pvc" (include "akeneo.fullname" .)) }}
