@@ -84,11 +84,7 @@ hostpath:
   storageClass:
     name: hostpath
     isDefault: false
-    gidAllocate:
-      enabled: true
-      gidMin: 40000
-      gidMax: 50000
-    reclaimPolicy: Delete
+    reclaimPolicy: Retain
 
 images:
  php:
