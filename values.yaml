@@ -80,7 +80,7 @@ hostpath:
   path: /hostpath
   type: DirectoryOrCreate
   containerMountPaths: {}
-  provisionerName: example.com/hostpath
+  provisionerName: kubernetes.io/no-provisioner
   storageClass:
     name: hostpath
     isDefault: false

@@ -14,15 +14,6 @@ metadata:
 {{ toYaml .Values.hostpath.annotations | indent 4 }}
 {{- end }}
 provisioner: {{ .Values.hostpath.provisionerName }}
-parameters:
-{{- if .Values.hostpath.storageClass.gidAllocate.enabled }}
-{{- with .Values.hostpath.storageClass.gidAllocate }}
-  gidAllocate: "true"
-  gidMin: "{{ .gidMin }}"
-  gidMax: "{{ .gidMax }}"
-{{- end }}
-{{- else }}
-  gidAllocate: "false"
-{{- end }}
 reclaimPolicy: {{ .Values.hostpath.storageClass.reclaimPolicy }}
+volumeBindingMode: WaitForFirstConsumer
 {{- end }}
