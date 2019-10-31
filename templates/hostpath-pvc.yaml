@@ -11,4 +11,5 @@ spec:
   resources:
     requests:
       storage: 40Gi
+  storageClassName: {{ .Values.hostpath.storageClass.name }}
 {{- end }}
