@@ -45,13 +45,13 @@ spec:
         - |-
         {{- if or .Values.efs.enabled .Values.efs.existingClaim }}
         {{- range $index, $val := .Values.efs.containerMountPaths }}
-          chown -c {{ .Values.phpfpm.userPermissions }}:{{ .Values.phpfpm.userPermissions }} /efs &&
+          chown -c {{ $userPermissions }}:{{ $userPermissions }} /efs &&
           chown -c {{ $userPermissions }}:{{ $userPermissions }} {{ $val }} &&
         {{- end }}
         {{- end }}
         {{- if or .Values.hostpath.enabled .Values.hostpath.existingClaim }}
         {{- range $index, $val := .Values.hostpath.containerMountPaths }}
-          chown -c {{ .Values.phpfpm.userPermissions }}:{{ .Values.phpfpm.userPermissions }} {{ .Values.hostpath.path }} &&
+          chown -c {{ $userPermissions }}:{{ $userPermissions }} {{ $.Values.hostpath.path }} &&
           chown -c {{ $userPermissions }}:{{ $userPermissions }} {{ $val }} &&
         {{- end }}
         {{- end }}
