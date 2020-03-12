@@ -1,3 +1,4 @@
+{{- include "efs.list" . -}}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -27,11 +28,7 @@ spec:
         - name: httpd-conf
           configMap:
             name: {{ template "akeneo.fullname" . }}-httpd-conf
-        {{- if .Values.efs.enabled }}
-        - name: efs
-          persistentVolumeClaim:
-            claimName: {{ .Values.efs.existingClaim | default (printf "%s-efs-pvc" (include "akeneo.fullname" .)) }}
-        {{- end }}
+        {{- include "efs.list.volumes" . | indent 8 }}
         {{- if .Values.hostpath.enabled }}
         - name: hostpath
           persistentVolumeClaim:
@@ -64,13 +61,7 @@ spec:
           - name: httpd-conf
             mountPath: /usr/local/apache2/conf/httpd.conf
             subPath: httpd.conf
-          {{- if .Values.efs.enabled }}
-          {{- range $index, $val := .Values.efs.containerMountPaths }}
-          - mountPath: {{ $val }}
-            subPath: {{ (trimPrefix "/" $val) }}
-            name: efs
-          {{- end }}
-          {{- end }}
+          {{- include "efs.list.volumeMounts" . | indent 10 }}
           {{- if .Values.hostpath.enabled }}
           {{- range $index, $val := .Values.hostpath.containerMountPaths }}
           - mountPath: {{ $val }}

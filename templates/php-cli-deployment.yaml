@@ -1,4 +1,5 @@
 {{- if .Values.phpcli.enabled }}
+{{- include "efs.list" . -}}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -22,11 +23,7 @@ spec:
       - name: {{ .Values.imagePullSecrets | quote }}
       {{- end }}
       volumes:
-        {{- if .Values.efs.enabled }}
-        - name: efs
-          persistentVolumeClaim:
-            claimName: {{ .Values.efs.existingClaim | default (printf "%s-efs-pvc" (include "akeneo.fullname" .)) }}
-        {{- end }}
+        {{- include "efs.list.volumes" . | indent 8 }}
         {{- if .Values.hostpath.enabled }}
         - name: hostpath
           persistentVolumeClaim:
@@ -57,13 +54,7 @@ spec:
           resources: {}
           {{- end }}
           volumeMounts:
-            {{- if .Values.efs.enabled }}
-            {{- range $index, $val := .Values.efs.containerMountPaths }}
-            - mountPath: {{ $val }}
-              subPath: {{ (trimPrefix "/" $val) }}
-              name: efs
-            {{- end }}
-            {{- end }}
+            {{- include "efs.list.volumeMounts" . | indent 12 }}
             {{- if .Values.hostpath.enabled }}
             {{- range $index, $val := .Values.hostpath.containerMountPaths }}
             - mountPath: {{ $val }}

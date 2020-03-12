@@ -3,7 +3,9 @@ nameOverride: null
 imagePullSecrets: null
 
 efs:
-  enabled: false
+  enabled: true
+  ## specific name, used in mount path
+  name: ""
   # existingClaim: akeneo-pvc
   replicaCount: 1
   revisionHistoryLimit: 10
@@ -30,9 +32,12 @@ efs:
       gidMin: 40000
       gidMax: 50000
     reclaimPolicy: Delete
-  # Don't use /
   containerMountPaths: {}
-    # - /media 
+#    # string version, same dir into container and volume
+#    - "/path/to/dir"
+#    # map version, mount on different container dir
+#    - containerPath: "/path/to/dir"
+#      volumePath: "/different/path/to/dir/inside/volume"
   ## Enable RBAC
   ##
   rbac:
@@ -74,6 +79,20 @@ efs:
     #  memory: 128Mi
 
   priorityClassName: ""
+
+### More efs(s)
+### Supports only existingClaim (won't be recognized by efs-storageClass/efs-deployment/etc.)
+additionalEfs: {}
+#  enabled: true
+#  ## specific name, used in mount path
+#  name: ""
+#  # existingClaim: akeneo-pvc
+#  containerMountPaths: {}
+#  # string version, same dir into container and volume
+#  - "/path/to/dir"
+#  # map version, mount on different container dir
+#  - containerPath: "/path/to/dir"
+#    volumePath: "/different/path/to/dir/inside/volume"
 
 hostpath:
   enabled: false
