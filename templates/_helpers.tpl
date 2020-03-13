@@ -88,11 +88,11 @@ Print efs list volumeMounts
   name: {{ $efsVolumeName }}
 {{- range $mount := .containerMountPaths }}
 {{- if eq (kindOf .) "map" }}
-- mountPath: "{{ .containerPath }}"
-  subPath: "{{ (trimPrefix "/" .volumePath) }}"
+- mountPath: {{ .containerPath }}
+  subPath: {{ (trimPrefix "/" .volumePath) }}
 {{- else }}
-- mountPath: "{{ . }}"
-  subPath: "{{ (trimPrefix "/" .) }}"
+- mountPath: {{ . }}
+  subPath: {{ (trimPrefix "/" .) }}
 {{- end }}
   name: {{ $efsVolumeName }}
 {{- end }}
@@ -113,9 +113,9 @@ Print efs list initContainers args
   chown -c {{ $userPermissions }}:{{ $userPermissions }} /{{ $efsVolumeName }} &&
 {{- range $mount := .containerMountPaths }}
 {{- if eq (kindOf .) "map" }}
-  chown -c {{ $userPermissions }}:{{ $userPermissions }} "{{ .containerPath }}" &&
+  chown -c {{ $userPermissions }}:{{ $userPermissions }} {{ .containerPath }} &&
 {{- else }}
-  chown -c {{ $userPermissions }}:{{ $userPermissions }} "{{ . }}" &&
+  chown -c {{ $userPermissions }}:{{ $userPermissions }} {{ . }} &&
 {{- end }}
 {{- end }}
 {{- end }}
