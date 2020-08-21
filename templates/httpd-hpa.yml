@@ -1,0 +1,31 @@
+{{- if .Values.httpd.hpa.enabled }}
+apiVersion: autoscaling/v2beta2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: {{ template "akeneo.fullname" . }}-httpd
+  labels:
+    app: {{ template "akeneo.fullname" . }}-httpd
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    release: "{{ .Release.Name }}"
+    heritage: "{{ .Release.Service }}"
+spec:
+  maxReplicas: {{ .Values.httpd.hpa.maxReplicas }}
+  metrics:
+    {{- range $index, $val := .Values.httpd.hpa.metrics }}
+    - resource:
+        name: {{ $val.name }}
+        target:
+          averageUtilization: {{ $val.target.averageUtilization }}
+          type: {{ $val.target.type }}
+      type: {{ $val.type }}
+  {{- end }}
+  minReplicas: {{ .Values.httpd.hpa.minReplicas }}
+  scaleTargetRef:
+    {{- if .Capabilities.APIVersions.Has "apps/v1" }}
+    apiVersion: apps/v1
+    {{- else }}
+    apiVersion: apps/v1beta2
+    {{- end }}
+    kind: Deployment
+    name: {{ template "akeneo.fullname" . }}-httpd
+{{- end }}

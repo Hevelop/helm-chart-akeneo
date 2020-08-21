@@ -175,6 +175,16 @@ phpfpm:
     enabled: true
     cpu: "1500m"
     memory: "1Gi"
+  hpa:
+    enabled: false
+    minReplicas: 5
+    maxReplicas: 20
+    metrics:
+      - name: cpu
+        type: Resource
+        target:
+          averageUtilization: 60
+          type: Utilization
 phpcli:
   enabled: false
   requests:
@@ -185,6 +195,17 @@ phpcli:
     enabled: true
     cpu: "1000m"
     memory: "1Gi"
+  hpa:
+    enabled: false
+    minReplicas: 1
+    maxReplicas: 5
+    metrics:
+      - name: cpu
+        type: Resource
+        target:
+          averageUtilization: 60
+          type: Utilization
+
 httpd:
   requests:
     enabled: true
@@ -194,3 +215,13 @@ httpd:
     enabled: true
     cpu: "400m"
     memory: "256Mi"
+  hpa:
+    enabled: false
+    minReplicas: 3
+    maxReplicas: 10
+    metrics:
+      - name: cpu
+        type: Resource
+        target:
+          averageUtilization: 60
+          type: Utilization

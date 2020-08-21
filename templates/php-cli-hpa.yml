@@ -1,0 +1,31 @@
+{{- if .Values.phpcli.hpa.enabled }}
+apiVersion: autoscaling/v2beta2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: {{ template "akeneo.fullname" . }}-php-cli
+  labels:
+    app: {{ template "akeneo.fullname" . }}-php-cli
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    release: "{{ .Release.Name }}"
+    heritage: "{{ .Release.Service }}"
+spec:
+  maxReplicas: {{ .Values.phpcli.hpa.maxReplicas }}
+  metrics:
+    {{- range $index, $val := .Values.phpcli.hpa.metrics }}
+    - resource:
+        name: {{ $val.name }}
+        target:
+          averageUtilization: {{ $val.target.averageUtilization }}
+          type: {{ $val.target.type }}
+      type: {{ $val.type }}
+  {{- end }}
+  minReplicas: {{ .Values.phpcli.hpa.minReplicas }}
+  scaleTargetRef:
+    {{- if .Capabilities.APIVersions.Has "apps/v1" }}
+    apiVersion: apps/v1
+    {{- else }}
+    apiVersion: apps/v1beta2
+    {{- end }}
+    kind: Deployment
+    name: {{ template "akeneo.fullname" . }}-php-cli
+{{- end }}
